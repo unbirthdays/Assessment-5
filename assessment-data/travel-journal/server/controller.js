@@ -1,3 +1,5 @@
+require("dotenv").config();
+const { CONNECTION STRING } = process.env;
 
 
 module.exports = {
