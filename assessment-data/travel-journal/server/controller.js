@@ -13,7 +13,7 @@ const sequelize = new Sequelize(CONNECTION_STRING, {
 
 
 module.exports = {
-    seed: (req, res) => {
+    seed: (_req, res) => {
         sequelize.query(`
             drop table if exists cities;
             drop table if exists countries;
@@ -232,7 +232,7 @@ module.exports = {
         }).catch(err => console.log('error seeding DB', err))
     },
 
-    getCountries: (req, res) => {
+    getCountries: (_req, res) => {
         sequelize.query(`SELECT * FROM countries;`).then((dbRes) => {
             res.status(200).send(dbRes[0])
         }).catch(err => console.log('error getting countries', err))
@@ -248,9 +248,8 @@ module.exports = {
 
     getCities: (req, res) => {
         sequelize.query(`
-        SELECT * FROM cities AS city, countries AS country
-        JOIN countries ON city.country_id = country.country_id
-        WHERE country.country_id = city.country_id;
+        SELECT city.city_id, city.name, city.rating, country.country_id, country.name FROM cities AS city
+        JOIN countries AS country ON country.country_id = city.country_id;
         `).then((dbRes) => {
             res.status(200).send(dbRes[0])
         }).catch(err => console.log('error getting cities', err))
